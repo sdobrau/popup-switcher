@@ -334,6 +334,17 @@ the buffer name."
    :item-name-getter 'identity
    :switcher 'find-file))
 
+(defun psw-switch-tab ()
+  (interactive)
+  (psw-switcher
+   :items-list (delete ;; remove current
+                (cdr (assq 'name (tab-bar--current-tab)))
+
+                (mapcar (lambda (tab) (cdr (assq 'name tab)))
+                           (tab-bar-tabs)))
+   :item-name-getter 'identity
+   :switcher 'tab-bar-switch-to-tab))
+
 (defun psw--error-projectile-is-missing ()
   "Projectile is optional, but needed for some commands."
   (user-error "This command requires the projectile library. \
