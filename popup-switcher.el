@@ -49,9 +49,9 @@ center - open popup at window center
 fill-column - centered relative to `fill-column'"
   :group 'popup-switcher
   :type '(choice
-	  (const :tag "point" :value point)
-	  (const :tag "center" :value center)
-	  (const :tag "fill-column" :value fill-column)))
+    (const :tag "point" :value point)
+    (const :tag "center" :value center)
+    (const :tag "fill-column" :value fill-column)))
 
 (defcustom psw-popup-menu-max-length 15
   "Set maximum number of visible items in popup menus."
@@ -338,6 +338,18 @@ the buffer name."
   "Projectile is optional, but needed for some commands."
   (user-error "This command requires the projectile library. \
 Please install it to use this command"))
+
+;;;###autoload
+(defun psw-switch-project-files ()
+  (interactive)
+  (psw-switcher
+   :items-list (let ((files (project-files (project-current t))))
+                 files)
+   :item-name-getter 'identity
+   :switcher (lambda (file)
+               (find-file
+                (expand-file-name file
+                                  (project-root (project-current t)))))))
 
 ;;;###autoload
 (defun psw-switch-projectile-files ()
